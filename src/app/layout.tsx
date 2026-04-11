@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Noto_Serif } from "next/font/google";
+import { LightboxProvider } from "@/components/gallery/LightboxProvider";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -30,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${manrope.variable} ${notoSerif.variable}`}>
       <body className="min-h-screen bg-background text-on-background antialiased selection:bg-secondary-fixed-dim selection:text-on-secondary-fixed">
-        {children}
+        <LightboxProvider>{children}</LightboxProvider>
       </body>
     </html>
   );

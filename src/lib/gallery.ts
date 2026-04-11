@@ -76,9 +76,18 @@ export function getGalleryItems(): GalleryItem[] {
   return FALLBACK_ITEMS;
 }
 
-/** Prefer `public/hero.{jpg,jpeg,webp,png}`; otherwise first gallery image. */
+/**
+ * Hero image order:
+ * 1. `public/gallery/0.jpg` (your chosen cover)
+ * 2. `public/hero.{jpg,jpeg,webp,png}`
+ * 3. First image from the gallery manifest / fallbacks
+ */
 export function getHeroBackground(): GalleryItem {
   const pub = path.join(process.cwd(), "public");
+  const galleryZero = path.join(pub, "gallery", "DSC05200.jpg");
+  if (fs.existsSync(galleryZero)) {
+    return { src: "/gallery/DSC05200.jpg", alt: "Nouran & Ali" };
+  }
   for (const name of HERO_FILES) {
     if (fs.existsSync(path.join(pub, name))) {
       return { src: `/${name}`, alt: "Nouran & Ali" };

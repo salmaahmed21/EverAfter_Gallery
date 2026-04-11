@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { NavBar } from "@/components/NavBar";
-import { GalleryPhoto } from "@/components/GalleryPhoto";
+import { FavoritesSection } from "@/components/FavoritesSection";
+import { GalleryTile } from "@/components/gallery/GalleryTile";
 import { GuestbookSection } from "@/components/GuestbookSection";
 import { getGalleryItems, getGallerySections, getHeroBackground } from "@/lib/gallery";
 
@@ -93,33 +94,35 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
             {c[0] ? (
-              <div className="gallery-item relative aspect-[4/5] overflow-hidden bg-surface-container md:col-span-7">
-                <GalleryPhoto item={c[0]} priority sizes="(max-width:768px) 100vw, 60vw" />
-              </div>
+              <GalleryTile
+                item={c[0]}
+                priority
+                sizes="(max-width:768px) 100vw, 60vw"
+                className="aspect-[4/5] md:col-span-7"
+              />
             ) : null}
 
             <div className="flex flex-col gap-8 md:col-span-5">
               {c[1] ? (
-                <div className="gallery-item relative aspect-[3/4] overflow-hidden bg-surface-container">
-                  <GalleryPhoto item={c[1]} priority={!c[0]} sizes="(max-width:768px) 100vw, 40vw" />
-                </div>
+                <GalleryTile
+                  item={c[1]}
+                  priority={!c[0]}
+                  sizes="(max-width:768px) 100vw, 40vw"
+                  className="aspect-[3/4]"
+                />
               ) : null}
               {c[2] ? (
-                <div className="gallery-item relative aspect-square overflow-hidden bg-surface-container">
-                  <GalleryPhoto item={c[2]} sizes="(max-width:768px) 100vw, 40vw" />
-                </div>
+                <GalleryTile item={c[2]} sizes="(max-width:768px) 100vw, 40vw" className="aspect-square" />
               ) : null}
             </div>
 
             {c[3] ? (
-              <div className="gallery-item relative mt-8 aspect-[21/9] overflow-hidden bg-surface-container md:col-span-12">
-                <GalleryPhoto item={c[3]} sizes="100vw" />
-              </div>
+              <GalleryTile item={c[3]} sizes="100vw" className="mt-8 aspect-[21/9] md:col-span-12" />
             ) : null}
           </div>
         </section>
 
-        <section className="bg-surface-container-low mb-32 overflow-hidden py-32" id="details">
+        <section className="bg-surface-container-low mb-32 overflow-hidden py-32" id="editorial">
           <div className="mx-auto max-w-screen-2xl px-8">
             <div className="grid grid-cols-1 items-center gap-16 md:grid-cols-12">
               <div className="order-2 md:order-1 md:col-span-4">
@@ -145,12 +148,12 @@ export default function HomePage() {
 
               <div className="order-1 flex gap-4 overflow-x-auto pb-8 no-scrollbar md:order-2 md:col-span-8 md:gap-8">
                 {d.map((item, idx) => (
-                  <div
+                  <GalleryTile
                     key={`${item.src}-${idx}`}
-                    className={`bg-surface-container-lowest relative aspect-[4/5] min-w-[300px] shrink-0 md:min-w-[400px] ${idx === 1 ? "mt-12" : ""}`}
-                  >
-                    <GalleryPhoto item={item} sizes="400px" />
-                  </div>
+                    item={item}
+                    sizes="400px"
+                    className={`min-w-[300px] shrink-0 aspect-[4/5] md:min-w-[400px] ${idx === 1 ? "mt-12" : ""}`}
+                  />
                 ))}
               </div>
             </div>
@@ -166,34 +169,26 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
             {b[0] ? (
-              <div className="gallery-item relative aspect-square overflow-hidden bg-surface-container md:col-span-2 md:row-span-2">
-                <GalleryPhoto item={b[0]} sizes="(max-width:768px) 100vw, 50vw" />
-              </div>
+              <GalleryTile
+                item={b[0]}
+                sizes="(max-width:768px) 100vw, 50vw"
+                className="aspect-square md:col-span-2 md:row-span-2"
+              />
             ) : null}
             {b[1] ? (
-              <div className="gallery-item relative aspect-[4/5] overflow-hidden bg-surface-container">
-                <GalleryPhoto item={b[1]} sizes="(max-width:768px) 100vw, 25vw" />
-              </div>
+              <GalleryTile item={b[1]} sizes="(max-width:768px) 100vw, 25vw" className="aspect-[4/5]" />
             ) : null}
             {b[2] ? (
-              <div className="gallery-item relative aspect-[4/5] overflow-hidden bg-surface-container">
-                <GalleryPhoto item={b[2]} sizes="(max-width:768px) 100vw, 25vw" />
-              </div>
+              <GalleryTile item={b[2]} sizes="(max-width:768px) 100vw, 25vw" className="aspect-[4/5]" />
             ) : null}
             {b[3] ? (
-              <div className="gallery-item relative aspect-video overflow-hidden bg-surface-container md:col-span-2">
-                <GalleryPhoto item={b[3]} sizes="100vw" />
-              </div>
+              <GalleryTile item={b[3]} sizes="100vw" className="aspect-video md:col-span-2" />
             ) : null}
             {b[4] ? (
-              <div className="gallery-item relative aspect-[4/5] overflow-hidden bg-surface-container">
-                <GalleryPhoto item={b[4]} sizes="25vw" />
-              </div>
+              <GalleryTile item={b[4]} sizes="25vw" className="aspect-[4/5]" />
             ) : null}
             {b[5] ? (
-              <div className="gallery-item relative aspect-[4/5] overflow-hidden bg-surface-container">
-                <GalleryPhoto item={b[5]} sizes="25vw" />
-              </div>
+              <GalleryTile item={b[5]} sizes="25vw" className="aspect-[4/5]" />
             ) : null}
           </div>
         </section>
@@ -207,13 +202,18 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
               {m.map((item, idx) => (
-                <div key={`${item.src}-${idx}`} className="gallery-item relative aspect-[3/4] overflow-hidden bg-surface-container">
-                  <GalleryPhoto item={item} sizes="(max-width:768px) 50vw, 25vw" />
-                </div>
+                <GalleryTile
+                  key={`${item.src}-${idx}`}
+                  item={item}
+                  sizes="(max-width:768px) 50vw, 25vw"
+                  className="aspect-[3/4]"
+                />
               ))}
             </div>
           </section>
         ) : null}
+
+        <FavoritesSection allItems={items} />
 
         <GuestbookSection />
       </main>
@@ -242,6 +242,12 @@ export default function HomePage() {
               href="#guestbook"
             >
               Guestbook
+            </a>
+            <a
+              className="font-manrope text-stone-500 hover:text-yellow-600 text-xs tracking-widest uppercase transition-colors duration-300"
+              href="#favorites"
+            >
+              Favorites
             </a>
           </div>
           <div className="flex gap-4">

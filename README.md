@@ -17,7 +17,11 @@ This writes `src/data/gallery-manifest.json` with every file in sorted order (na
 
 If the folder is empty, the site shows tasteful placeholder images so the layout still looks complete.
 
-**Hero image (top of the page):** Add a single file named `hero.jpg`, `hero.jpeg`, `hero.webp`, or `hero.png` inside `public/`. That image is used as the full-screen landing background. If you skip it, the first gallery photo is used instead.
+**Hero image (top of the page):** If `public/gallery/0.jpg` exists, it is always used as the full-screen landing background. Otherwise the app looks for `public/hero.{jpg,jpeg,webp,png}`, then falls back to the first gallery photo.
+
+**Download all:** Right-click the desktop nav links (Gallery, Guestbook, …) or tap **Options** on mobile to open the side menu, then choose **Download all images** — a zip named **A+N.zip** is built from everything in `public/gallery/`.
+
+**Favorites:** Hearts are stored in the visitor’s browser only (localStorage).
 
 ## Guestbook (optional but recommended)
 
