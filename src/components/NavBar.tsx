@@ -27,17 +27,8 @@ function MenuIcon({ className }: { className?: string }) {
 }
 
 async function downloadAllZip() {
-  const res = await fetch("/api/gallery/zip");
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(typeof err === "object" && err && "error" in err ? String((err as { error: string }).error) : "Could not create zip.");
-  }
-  const blob = await res.blob();
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "A+N.zip";
-  a.click();
-  URL.revokeObjectURL(a.href);
+  const { downloadAllGalleryZip } = await import("@/lib/clientZipGallery");
+  await downloadAllGalleryZip();
 }
 
 export function NavBar() {
