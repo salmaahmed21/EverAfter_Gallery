@@ -1,10 +1,11 @@
-import fs from "fs";
-import path from "path";
 import manifest from "@/data/gallery-manifest.json";
 
-const HERO_FILES = ["hero.jpg", "hero.jpeg", "hero.webp", "hero.png"] as const;
-
 export type GalleryItem = { src: string; alt: string };
+
+type ManifestShape = {
+  items?: unknown;
+  hero?: { src?: string; alt?: string } | null;
+};
 
 const FALLBACK_ITEMS: GalleryItem[] = [
   {
@@ -71,50 +72,45 @@ function normalizeItems(raw: unknown): GalleryItem[] {
 }
 
 export function getGalleryItems(): GalleryItem[] {
-  const fromFile = normalizeItems((manifest as { items?: unknown }).items);
+  const fromFile = normalizeItems((manifest as ManifestShape).items);
   if (fromFile.length > 0) return fromFile;
   return FALLBACK_ITEMS;
 }
 
+function itemByFileName(items: GalleryItem[], filename: string): GalleryItem | null {
+  const target = `/gallery/${encodeURIComponent(filename)}`;
+  return items.find((i) => i.src === target) ?? null;
+}
+
 /**
- * Hero image order:
- * 1. `public/gallery/0.jpg` (your chosen cover)
- * 2. `public/hero.{jpg,jpeg,webp,png}`
- * 3. First image from the gallery manifest / fallbacks
+ * Hero is chosen at `npm run gallery:manifest` / prebuild and stored in the manifest
+ * (`hero` field) so we never call `fs` on `public/gallery` at runtime (Vercel would
+ * trace the whole folder into the server bundle).
+ *
+ * Order matches the generator: `DSC05200.jpg` in gallery, then `public/hero.*`, else first item.
  */
 export function getHeroBackground(): GalleryItem {
-  const pub = path.join(process.cwd(), "public");
-  const galleryZero = path.join(pub, "gallery", "DSC05200.jpg");
-  if (fs.existsSync(galleryZero)) {
-    return { src: "/gallery/DSC05200.jpg", alt: "Nouran & Ali" };
-  }
-  for (const name of HERO_FILES) {
-    if (fs.existsSync(path.join(pub, name))) {
-      return { src: `/${name}`, alt: "Nouran & Ali" };
-    }
+  const raw = (manifest as ManifestShape).hero;
+  if (raw && typeof raw === "object" && typeof raw.src === "string" && raw.src.trim()) {
+    const alt = typeof raw.alt === "string" && raw.alt.trim() ? raw.alt.trim() : "Nouran & Ali";
+    return { src: raw.src.trim(), alt };
   }
   return getGalleryItems()[0]!;
 }
 
-const GALLERY_DIR = path.join(process.cwd(), "public", "gallery");
-
-function itemFromGalleryFile(name: string): GalleryItem | null {
-  const full = path.join(GALLERY_DIR, name);
-  if (!fs.existsSync(full)) return null;
-  return { src: `/gallery/${encodeURIComponent(name)}`, alt: path.parse(name).name };
-}
-
-/** Our Day: manifest order for slots 1–2; 3rd slot is `DSC05582.jpg` when present. */
+/** Our Day: 1st slot `2.jpg` when in manifest; 2nd from manifest order; 3rd `DSC05582.jpg` when listed. */
 export function getCeremonyItems(items: GalleryItem[]): GalleryItem[] {
-  const third = itemFromGalleryFile("DSC05582.jpg") ?? items[2];
-  const out = [items[0], items[1], third].filter((x): x is GalleryItem => Boolean(x));
+  const first = itemByFileName(items, "2.jpg") ?? items[0];
+  const second = items[1];
+  const third = itemByFileName(items, "DSC05582.jpg") ?? items[2];
+  const out = [first, second, third].filter((x): x is GalleryItem => Boolean(x));
   return out;
 }
 
-/** “Art of the Little Things” horizontal strip — fixed files when present. */
+/** “Art of the Little Things” horizontal strip — fixed files when all are in the manifest. */
 export function getEditorialStripItems(items: GalleryItem[]): GalleryItem[] {
   const names = ["DSC05106.jpg", "DSC05314.jpg", "DSC04626.jpg"];
-  const forced = names.map((n) => itemFromGalleryFile(n)).filter((x): x is GalleryItem => x !== null);
+  const forced = names.map((n) => itemByFileName(items, n)).filter((x): x is GalleryItem => x !== null);
   if (forced.length === 3) return forced;
   return items.slice(3, 6);
 }

@@ -17,7 +17,7 @@ This writes `src/data/gallery-manifest.json` with every file in sorted order (na
 
 If the folder is empty, the site shows tasteful placeholder images so the layout still looks complete.
 
-**Hero image (top of the page):** If `public/gallery/0.jpg` exists, it is always used as the full-screen landing background. Otherwise the app looks for `public/hero.{jpg,jpeg,webp,png}`, then falls back to the first gallery photo.
+**Hero image (top of the page):** When you run `npm run gallery:manifest` (or on Vercel at build time), the manifest records the hero: `public/gallery/DSC05200.jpg` if present, else `public/hero.{jpg,jpeg,webp,png}`, else the first gallery file. No runtime filesystem checks — that keeps the server bundle small on Vercel.
 
 **Download all:** Right-click the desktop nav links (Gallery, Guestbook, …) or tap **Options** on mobile to open the side menu, then choose **Download all images**. The browser fetches each file listed in the gallery manifest and builds **A+N.zip** locally (this avoids Vercel’s serverless size limit; very large galleries may take a while or need a powerful device).
 
