@@ -3,12 +3,19 @@ import { NavBar } from "@/components/NavBar";
 import { FavoritesSection } from "@/components/FavoritesSection";
 import { GalleryTile } from "@/components/gallery/GalleryTile";
 import { GuestbookSection } from "@/components/GuestbookSection";
-import { getGalleryItems, getGallerySections, getHeroBackground } from "@/lib/gallery";
+import {
+  getCeremonyItems,
+  getEditorialStripItems,
+  getGalleryItems,
+  getHeroBackground,
+  getMoreMemoriesItems,
+} from "@/lib/gallery";
 
 export default function HomePage() {
   const items = getGalleryItems();
-  const sections = getGallerySections(items);
-  const { ceremony: c, details: d, celebration: b, more: m } = sections;
+  const c = getCeremonyItems(items);
+  const editorialStrip = getEditorialStripItems(items);
+  const m = getMoreMemoriesItems(items, c, editorialStrip);
   const hero = getHeroBackground();
 
   return (
@@ -116,9 +123,6 @@ export default function HomePage() {
               ) : null}
             </div>
 
-            {c[3] ? (
-              <GalleryTile item={c[3]} sizes="100vw" className="mt-8 aspect-[21/9] md:col-span-12" />
-            ) : null}
           </div>
         </section>
 
@@ -133,12 +137,9 @@ export default function HomePage() {
                   The Art of the <br />
                   <span className="font-normal italic">Little Things</span>
                 </h2>
-                <p className="font-manrope text-on-surface-variant mb-8 text-sm leading-relaxed">
-                  Ribbons, rings, handwritten notes, the way the light hit the room — the smallest frames can carry the
-                  biggest memories.
-                </p>
+               
                 <a
-                  href="#moments"
+                  href="#more-memories"
                   className="group text-secondary flex items-center gap-4 text-xs font-semibold tracking-widest uppercase"
                 >
                   See more moments
@@ -147,7 +148,7 @@ export default function HomePage() {
               </div>
 
               <div className="order-1 flex gap-4 overflow-x-auto pb-8 no-scrollbar md:order-2 md:col-span-8 md:gap-8">
-                {d.map((item, idx) => (
+                {editorialStrip.map((item, idx) => (
                   <GalleryTile
                     key={`${item.src}-${idx}`}
                     item={item}
@@ -160,41 +161,8 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mx-auto mb-32 max-w-screen-2xl px-8" id="moments">
-          <div className="mb-12 flex items-center gap-4">
-            <div className="h-[1px] w-12 bg-outline-variant/20"></div>
-            <h2 className="font-notoSerif text-on-surface text-2xl italic">The Celebration</h2>
-            <div className="h-[1px] flex-grow bg-outline-variant/20"></div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-            {b[0] ? (
-              <GalleryTile
-                item={b[0]}
-                sizes="(max-width:768px) 100vw, 50vw"
-                className="aspect-square md:col-span-2 md:row-span-2"
-              />
-            ) : null}
-            {b[1] ? (
-              <GalleryTile item={b[1]} sizes="(max-width:768px) 100vw, 25vw" className="aspect-[4/5]" />
-            ) : null}
-            {b[2] ? (
-              <GalleryTile item={b[2]} sizes="(max-width:768px) 100vw, 25vw" className="aspect-[4/5]" />
-            ) : null}
-            {b[3] ? (
-              <GalleryTile item={b[3]} sizes="100vw" className="aspect-video md:col-span-2" />
-            ) : null}
-            {b[4] ? (
-              <GalleryTile item={b[4]} sizes="25vw" className="aspect-[4/5]" />
-            ) : null}
-            {b[5] ? (
-              <GalleryTile item={b[5]} sizes="25vw" className="aspect-[4/5]" />
-            ) : null}
-          </div>
-        </section>
-
         {m.length > 0 ? (
-          <section className="mx-auto mb-32 max-w-screen-2xl px-8" aria-label="More photos">
+          <section className="mx-auto mb-32 max-w-screen-2xl px-8" id="more-memories" aria-label="More photos">
             <div className="mb-12 flex items-center gap-4">
               <div className="h-[1px] flex-grow bg-outline-variant/20"></div>
               <h2 className="font-notoSerif text-on-surface text-2xl italic">More Memories</h2>

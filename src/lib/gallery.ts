@@ -96,11 +96,31 @@ export function getHeroBackground(): GalleryItem {
   return getGalleryItems()[0]!;
 }
 
-export function getGallerySections(items: GalleryItem[]) {
-  return {
-    ceremony: items.slice(0, 4),
-    details: items.slice(4, 7),
-    celebration: items.slice(7, 13),
-    more: items.slice(13),
-  };
+const GALLERY_DIR = path.join(process.cwd(), "public", "gallery");
+
+function itemFromGalleryFile(name: string): GalleryItem | null {
+  const full = path.join(GALLERY_DIR, name);
+  if (!fs.existsSync(full)) return null;
+  return { src: `/gallery/${encodeURIComponent(name)}`, alt: path.parse(name).name };
+}
+
+/** Our Day: manifest order for slots 1–2; 3rd slot is `DSC05582.jpg` when present. */
+export function getCeremonyItems(items: GalleryItem[]): GalleryItem[] {
+  const third = itemFromGalleryFile("DSC05582.jpg") ?? items[2];
+  const out = [items[0], items[1], third].filter((x): x is GalleryItem => Boolean(x));
+  return out;
+}
+
+/** “Art of the Little Things” horizontal strip — fixed files when present. */
+export function getEditorialStripItems(items: GalleryItem[]): GalleryItem[] {
+  const names = ["DSC05106.jpg", "DSC05314.jpg", "DSC04626.jpg"];
+  const forced = names.map((n) => itemFromGalleryFile(n)).filter((x): x is GalleryItem => x !== null);
+  if (forced.length === 3) return forced;
+  return items.slice(3, 6);
+}
+
+/** More memories: full manifest minus anything already shown in Our Day or editorial strip (no duplicates). */
+export function getMoreMemoriesItems(items: GalleryItem[], ceremony: GalleryItem[], editorial: GalleryItem[]): GalleryItem[] {
+  const used = new Set([...ceremony, ...editorial].map((i) => i.src));
+  return items.filter((i) => !used.has(i.src));
 }
