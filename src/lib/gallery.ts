@@ -92,7 +92,7 @@ function itemByFileName(items: GalleryItem[], filename: string): GalleryItem | n
 export function getHeroBackground(): GalleryItem {
   const raw = (manifest as ManifestShape).hero;
   if (raw && typeof raw === "object" && typeof raw.src === "string" && raw.src.trim()) {
-    const alt = typeof raw.alt === "string" && raw.alt.trim() ? raw.alt.trim() : "Nouran & Ali";
+    const alt = typeof raw.alt === "string" && raw.alt.trim() ? raw.alt.trim() : "Omar & Habiba";
     return { src: raw.src.trim(), alt };
   }
   return getGalleryItems()[0]!;

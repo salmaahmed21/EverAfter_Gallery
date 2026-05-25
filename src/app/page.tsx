@@ -44,7 +44,7 @@ export default function HomePage() {
             A love story captured
           </p>
           <h1 className="font-notoSerif max-w-4xl text-5xl leading-[1.05] font-normal italic sm:text-6xl md:text-7xl lg:text-8xl">
-            Nouran &amp; Ali
+            Omar &amp; Habiba
           </h1>
           <div className="mx-auto mt-8 h-px w-14 bg-white/85 sm:w-16" aria-hidden />
           <p className="font-notoSerif mt-8 text-sm tracking-[0.28em] text-white/95 uppercase sm:text-base sm:tracking-[0.25em]">
@@ -189,7 +189,7 @@ export default function HomePage() {
       <footer className="bg-stone-50 dark:bg-stone-950 static w-full">
         <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-between gap-8 px-12 py-16 md:flex-row">
           <div className="flex flex-col gap-2 text-center md:text-left">
-            <span className="font-notoSerif text-lg text-stone-700 dark:text-stone-300">Nouran &amp; Ali</span>
+            <span className="font-notoSerif text-lg text-stone-700 dark:text-stone-300">Omar &amp; Habiba</span>
             <p className="font-manrope text-stone-500 text-xs tracking-widest uppercase">Ever After Gallery</p>
           </div>
           <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">

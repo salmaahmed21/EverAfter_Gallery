@@ -24,11 +24,11 @@ function listFiles() {
 function pickHero() {
   const galleryHero = path.join(galleryDir, HERO_GALLERY_FILE);
   if (fs.existsSync(galleryHero)) {
-    return { src: `/gallery/${encodeURIComponent(HERO_GALLERY_FILE)}`, alt: "Nouran & Ali" };
+    return { src: `/gallery/${encodeURIComponent(HERO_GALLERY_FILE)}`, alt: "Omar & Habiba" };
   }
   for (const name of HERO_PUBLIC_NAMES) {
     if (fs.existsSync(path.join(publicDir, name))) {
-      return { src: `/${name}`, alt: "Nouran & Ali" };
+      return { src: `/${name}`, alt: "Omar & Habiba" };
     }
   }
   return null;

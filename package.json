@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "gallery:manifest": "node scripts/generate-gallery-manifest.mjs",
+    "db:migrate": "node scripts/migrate-guestbook-db.mjs",
     "prebuild": "node scripts/generate-gallery-manifest.mjs",
     "dev": "next dev",
     "build": "next build",

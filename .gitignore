@@ -14,7 +14,11 @@
 # next.js
 /.next/
 /out/
+# Next.js generated files in any folder
+**/.next/
 
+# dependencies in any folder
+**/node_modules/
 # production
 /build
 

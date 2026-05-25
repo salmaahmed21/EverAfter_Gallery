@@ -19,8 +19,8 @@ const notoSerif = Noto_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Nouran & Ali | Engagement Gallery",
-  description: "Ever After — an engagement gallery for Nouran & Ali.",
+  title: "Omar & Habiba | Engagement Gallery",
+  description: "Ever After — an engagement gallery for Omar & Habiba.",
 };
 
 export default function RootLayout({

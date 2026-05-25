@@ -1,4 +1,4 @@
-# Ever After Gallery — Nouran & Ali
+# Ever After Gallery — Omar & Habiba
 
 A single long-scroll engagement gallery built with [Next.js](https://nextjs.org/). The page includes a full-viewport landing hero, editorial gallery sections, and a guestbook.
 
@@ -19,35 +19,32 @@ If the folder is empty, the site shows tasteful placeholder images so the layout
 
 **Hero image (top of the page):** When you run `npm run gallery:manifest` (or on Vercel at build time), the manifest records the hero: `public/gallery/DSC05200.jpg` if present, else `public/hero.{jpg,jpeg,webp,png}`, else the first gallery file. No runtime filesystem checks — that keeps the server bundle small on Vercel.
 
-**Download all:** Right-click the desktop nav links (Gallery, Guestbook, …) or tap **Options** on mobile to open the side menu, then choose **Download all images**. The browser fetches each file listed in the gallery manifest and builds **A+N.zip** locally (this avoids Vercel’s serverless size limit; very large galleries may take a while or need a powerful device).
+**Download all:** Right-click the desktop nav links (Gallery, Guestbook, …) or tap **Options** on mobile to open the side menu, then choose **Download all images**. The browser fetches each file listed in the gallery manifest and builds **O+H.zip** locally (this avoids Vercel’s serverless size limit; very large galleries may take a while or need a powerful device).
 
 **Favorites:** Hearts are stored in the visitor’s browser only (localStorage).
 
 ## Guestbook (optional but recommended)
 
-Without Supabase, the guestbook list stays empty and submitting a note will show an error until you add the environment variables below.
+The app uses a **new** Supabase project for Omar & Habiba. The old Nouran & Ali project is only referenced as `LEGACY_*` when you copy existing messages.
 
-1. Create a free project at [supabase.com](https://supabase.com).
-2. In the SQL editor, run:
+Without the new Supabase env vars, the guestbook list stays empty and submitting a note will show an error.
 
-```sql
-create table if not exists public.guestbook_messages (
-  id uuid primary key default gen_random_uuid(),
-  created_at timestamptz not null default now(),
-  author text not null,
-  body text not null
-);
+1. Create a **new** free project at [supabase.com](https://supabase.com) (do not reuse the old gallery project).
+2. In the SQL editor, run the contents of [`supabase/schema.sql`](supabase/schema.sql).
+3. Copy `.env.example` to `.env` (or `.env.local`) and set:
+   - `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` — **new** project (app uses these)
+   - `LEGACY_SUPABASE_URL` and `LEGACY_SUPABASE_SERVICE_ROLE_KEY` — old project (migration only)
+4. Copy guestbook messages from the old database:
 
-alter table public.guestbook_messages enable row level security;
+```bash
+npm run db:migrate
 ```
 
-3. The API uses the **service role** key server-side only (bypasses RLS for inserts). Do **not** expose the service role key in client code.
-4. Copy `.env.example` to `.env.local` and set:
+5. Redeploy on Vercel with the **new** URL and service role key (not `LEGACY_*`).
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
+The API uses the **service role** key server-side only. Do **not** expose the service role key in client code.
 
-Redeploy; new guestbook posts will persist.
+**Note:** Favorites (hearts) are stored in the browser only (localStorage), not in Supabase. Only guestbook messages use the database.
 
 ## Local development
 
@@ -90,12 +87,12 @@ These steps use **GitHub** (free) + **Vercel** (free hobby tier), which fits thi
 
 5. **Framework**: Vercel should detect **Next.js** automatically. Leave defaults and click **Deploy**. The first build may take a few minutes.
 
-6. **Environment variables (guestbook)**: After the first deploy, open the project → **Settings** → **Environment Variables**. Add:
+6. **Environment variables (guestbook)**: After the first deploy, open the project → **Settings** → **Environment Variables**. Add the **new** Omar & Habiba Supabase project only:
 
-   - `NEXT_PUBLIC_SUPABASE_URL` = your Supabase project URL  
-   - `SUPABASE_SERVICE_ROLE_KEY` = your Supabase **service_role** secret (never the publishable/anon key)
+   - `NEXT_PUBLIC_SUPABASE_URL` = new project URL  
+   - `SUPABASE_SERVICE_ROLE_KEY` = new project **service_role** secret (never the publishable/anon key)
 
-   Apply to **Production** (and **Preview** if you want previews to work too), then **Redeploy** (Deployments → … on latest → Redeploy).
+   Do not add `LEGACY_*` to Vercel (migration runs locally once). Apply to **Production** (and **Preview** if you want previews to work too), then **Redeploy**.
 
 7. **Custom domain (optional)**: **Settings** → **Domains** → add your domain and follow DNS instructions.
 

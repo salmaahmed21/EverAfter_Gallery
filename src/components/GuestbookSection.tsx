@@ -89,7 +89,7 @@ export function GuestbookSection() {
           <span className="font-manrope text-secondary mb-4 block text-xs tracking-[0.3em] uppercase">Leave a Message</span>
           <h3 className="font-notoSerif text-on-surface mb-10 text-4xl">
             Kind Words for <br />
-            <span className="font-normal italic">Nouran &amp; Ali</span>
+            <span className="font-normal italic">Omar &amp; Habiba</span>
           </h3>
 
           <form className="space-y-8" onSubmit={onSubmit}>

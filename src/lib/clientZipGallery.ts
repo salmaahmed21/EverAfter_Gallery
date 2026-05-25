@@ -1,5 +1,5 @@
 /**
- * Builds A+N.zip in the browser (Vercel serverless has a ~300MB function limit;
+ * Builds O+H.zip in the browser (Vercel serverless has a ~300MB function limit;
  * zipping hundreds of photos server-side pulled all of `public/gallery` into the bundle).
  */
 
@@ -21,7 +21,7 @@ export async function downloadAllGalleryZip(options?: {
 
   const JSZip = (await import("jszip")).default;
   const zip = new JSZip();
-  const folder = zip.folder("A+N");
+  const folder = zip.folder("O+H");
   if (!folder) throw new Error("Could not create zip folder.");
 
   const origin = window.location.origin;
@@ -47,7 +47,7 @@ export async function downloadAllGalleryZip(options?: {
   const blob = await zip.generateAsync({ type: "blob" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "A+N.zip";
+  a.download = "O+H.zip";
   a.click();
   URL.revokeObjectURL(a.href);
 }

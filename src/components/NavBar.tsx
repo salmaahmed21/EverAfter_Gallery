@@ -92,7 +92,7 @@ export function NavBar() {
             }`}
             onClick={() => setExtrasOpen(false)}
           >
-            Nouran &amp; Ali
+            Omar &amp; Habiba
           </a>
 
           <div
@@ -152,14 +152,14 @@ export function NavBar() {
             >
               {zipping ? "Preparing zip…" : "Download all images"}
             </button>
-            <p className="font-manrope -mt-4 text-[10px] text-stone-500">Saves as A+N.zip</p>
+            <p className="font-manrope -mt-4 text-[10px] text-stone-500">Saves as O+H.zip</p>
 
             <Link
-              href="/ali-nouran"
+              href="/omar-habiba"
               className="font-manrope border border-white/25 px-4 py-3 text-center text-xs font-semibold tracking-widest uppercase transition-colors hover:bg-white/10"
               onClick={() => setExtrasOpen(false)}
             >
-              Ali / Nouran only
+              Omar / Habiba only
             </Link>
           </aside>
         </div>
